@@ -23,8 +23,11 @@ jobs:
       - name: Generate telegram.txt file
         run: |
           echo "# Telegram" > telegram.txt
-          # 正则匹配内容 payload: 并写入 payload:
-          curl -sSL ${blackmatrix7_telegram} | perl -ne 'print "payload:" if /payload:/' >> telegram.txt
+          # 正则匹配内容 'payload:' 并写入 'payload:' 并换行
+          curl -sSL ${blackmatrix7_telegram} | grep 'payload:' | sed 's/payload:/payload:\n/g' >> telegram.txt
+          # curl -sSL ${blackmatrix7_telegram} | grep -E '^payload:' | sed 's/payload:/payload:\n/g' >> telegram.txt
+          # curl -sSL ${blackmatrix7_telegram} | perl -ne 'print "payload:" if /payload:/' >> telegram.txt
+
           # 正则匹配包含'   -  '的内容 并写入该行所有内容
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /\s+-\s+/' >> telegram.txt
           # curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /   - /' >> telegram.txt
