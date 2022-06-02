@@ -27,6 +27,12 @@ jobs:
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print "payload:" if /payload:/' >> telegram.txt
           # 正则匹配包含   -  的内容 并写入该行所有内容
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /   - /' >> telegram.txt
+
+      - name: Move files to publish directory
+        run: |
+          mkdir -p publish
+          cp *.txt ./publish/
+
       - name: Release and upload assets
         uses: softprops/action-gh-release@v1
         with:
