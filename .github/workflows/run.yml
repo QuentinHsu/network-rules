@@ -34,9 +34,10 @@ jobs:
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /\s+-\s+/' >> telegram.txt
           # curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /   - /' >> telegram.txt
 
-          # 正则匹配 'IP-CIDR/IP-CIDR6' 并写入 '- '并追加该行除了 no-resolve 之外的内容
-          curl -sSL ${blackmatrix7_telegram} | perl -ne 'print "  - " if /IP-CIDR/' >> telegram.txt
-          # curl -sSL ${my_telegram} | perl -ne 'print if /\s+-\s+/' | grep -v 'no-resolve' >> telegram.txt
+          # 正则匹配包含 'IP-CIDR' 或者 'IP-CIDR6'，若匹配到就写入 '  - ' + 该行除了 ', no-resolve' 之外的内容，且换行
+          curl -sSL ${my_telegram} | perl -ne 'print if /IP-CIDR/ or /IP-CIDR6/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> telegram.txt
+          # curl -sSL ${my_telegram} | perl -ne 'print if /IP-CIDR/ or /IP-CIDR6/' | sed 's/, no-resolve//g' >> telegram.txt
+          # curl -sSL ${my_telegram} | perl -ne 'print if /IP-CIDR/ or /IP-CIDR6/' | sed 's/no-resolve/\nno-resolve/g' | sed 's/IP-CIDR/  - /g' | sed 's/IP-CIDR6/  - /g' >> telegram.txt
 
       - name: Move files to publish directory
         run: |
