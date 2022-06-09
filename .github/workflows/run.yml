@@ -20,6 +20,7 @@ jobs:
           # telegram rules
           echo "blackmatrix7_telegram=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml" >> $GITHUB_ENV
           echo "my_telegram=https://raw.githubusercontent.com/QuentinHsu/Apple-Rules-Script/main/clash/rule/telegram-ip.list" >> $GITHUB_ENV
+          echo "acl4ssr_proxyGFWList=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
         shell: bash
 
       - name: Generate telegram.txt file
@@ -29,10 +30,20 @@ jobs:
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /payload:/' >> telegram.txt
           # 正则匹配包含'   -  '的内容 并写入该行所有内容
           curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /\s+-\s+/' >> telegram.txt
-          # 写入一行注释：# my Telegram
+          # 写入一行注释：# My Telegram
           echo "# my Telegram" >> telegram.txt
           # 正则匹配包含 'IP-CIDR' 或者 'IP-CIDR6'，若匹配到就写入 '  - ' + 该行除了 ', no-resolve' 之外的内容，且换行
           curl -sSL ${my_telegram} | perl -ne 'print if /IP-CIDR/ or /IP-CIDR6/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> telegram.txt
+
+      - name: Generate acl4ssr-proxy.txt file
+        run: |
+          echo "# ACL4SSR Proxy" > acl4ssr-proxy.txt
+          # 写入 'payload:'
+          echo "payload:" >> acl4ssr-proxy.txt
+          # 正则匹配包含'# '的内容 并写入该行所有内容
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /# /' >> acl4ssr-proxy.txt
+          # 正则匹配不包含 '# '，若匹配到就写入 '  - ' + 该行除了 ',no-resolve' 之外的内容，且换行
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if !/# /' | sed 's/,no-resolve//g' | sed 's/^/  - /g' >> acl4ssr-proxy.txt
 
       - name: Move files to publish directory
         run: |
