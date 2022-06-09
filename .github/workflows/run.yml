@@ -40,11 +40,10 @@ jobs:
           echo "# ACL4SSR Proxy" > acl4ssr-proxy.txt
           # 写入 'payload:'
           echo "payload:" >> acl4ssr-proxy.txt
-          # 正则匹配包含'# '的内容 并写入该行所有内容
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /# /' >> acl4ssr-proxy.txt
-          # 正则匹配不包含 '# '，若匹配到就写入 '  - ' + 该行除了 ',no-resolve' 之外的内容，且换行
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if !/# /' | sed 's/,no-resolve//g' | sed 's/^/  - /g' >> acl4ssr-proxy.txt
-
+          # # 正则匹配包含'# '的内容 并写入该行所有内容
+          # curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /# /' >> acl4ssr-proxy.txt
+          # 正则匹配不包含 '#' 或者整行是空的，若匹配到就写入 '  - ' + 该行除了 ',no-resolve' 之外的内容，且换行
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if !/^#/ and !/^$/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> acl4ssr-proxy.txt
       - name: Move files to publish directory
         run: |
           mkdir -p publish
