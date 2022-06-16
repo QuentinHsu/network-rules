@@ -60,7 +60,7 @@ jobs:
           echo "# ACL4SSR Proxy for Quantumult X" > acl4ssr-proxy-qx.list
 
           # 匹配到 DOMAIN-SUFFIX，写入 HOST-SUFFIX 并写入 DOMAIN-SUFFIX 之后的内容
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-SUFFIX/' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g' | sed 's/^/  - /g' >> acl4ssr-proxy-qx.list
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-SUFFIX/' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g' >> acl4ssr-proxy-qx.list
 
           # 匹配到 DOMAIN-KEYWORD 写入 HOST-KEYWORD 并写入 DOMAIN-KEYWORD 之后的内容
           curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-KEYWORD/' | sed 's/DOMAIN-KEYWORD/HOST-KEYWORD/g' >> acl4ssr-proxy-qx.list
