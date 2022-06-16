@@ -75,10 +75,9 @@ jobs:
         run: |
           echo "# ACL4SSR Proxy for Quantumult X" > acl4ssr-proxy-qx-test.list
           # 匹配空行，写入 '###'
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /^$/' | sed 's/^/######/g' >> acl4ssr-proxy-qx-test.list
-          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' >> acl4ssr-proxy-qx-test.list
-          # acl4ssr-proxy-qx-test.list 中，匹配包含 '#' 的行：删除其内容 ', Proxy'
-          perl -ne 'print if /#/' acl4ssr-proxy-qx-test.list | sed 's/, Proxy//g' >> acl4ssr-proxy-qx-test.list
+
+          # curl -sSL ${acl4ssr_proxyGFWList} | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' >> acl4ssr-proxy-qx-test.list
+          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/^$/######/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' >> acl4ssr-proxy-qx-test.list
 
 
 
