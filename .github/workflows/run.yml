@@ -68,19 +68,18 @@ jobs:
       - name: Move files to publish directory
         run: |
           cp *.txt ./publish/
-          # cp *.list ./publish/Quantumult-X/
 
-      - name: Release and upload assets
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ env.RELEASE_NAME }}
-          tag_name: ${{ env.TAG_NAME }}
-          draft: false
-          prerelease: false
-          files: |
-            ./publish/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.CLASH_RULES }}
+      # - name: Release and upload assets
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     name: ${{ env.RELEASE_NAME }}
+      #     tag_name: ${{ env.TAG_NAME }}
+      #     draft: false
+      #     prerelease: false
+      #     files: |
+      #       ./publish/*
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.CLASH_RULES }}
 
       - name: Git push assets to "release" branch
         run: |
