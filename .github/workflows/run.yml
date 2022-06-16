@@ -22,7 +22,10 @@ jobs:
           echo "my_telegram=https://raw.githubusercontent.com/QuentinHsu/Apple-Rules-Script/main/clash/rule/telegram-ip.list" >> $GITHUB_ENV
           echo "acl4ssr_proxyGFWList=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
         shell: bash
-
+      - name: Generate directory
+        run: |
+          mkdir -p publish/Quantumult-X
+          mkdir -p publish/Clash
       - name: Generate telegram.txt file
         run: |
           echo "# Telegram" > telegram.txt
@@ -64,9 +67,8 @@ jobs:
 
       - name: Move files to publish directory
         run: |
-          mkdir -p publish
           cp *.txt ./publish/
-          cp *.list ./publish/
+          cp *.list ./publish/Quantumult-X/
 
       - name: Release and upload assets
         uses: softprops/action-gh-release@v1
