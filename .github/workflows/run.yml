@@ -58,24 +58,7 @@ jobs:
       - name: Generate acl4ssr-proxy-qx.list file
         run: |
           echo "# ACL4SSR Proxy for Quantumult X" > acl4ssr-proxy-qx.list
-
-          # 匹配到 DOMAIN-SUFFIX，写入 ',Proxy',再将 DOMAIN-SUFFIX 替换成 HOST-SUFFIX
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-SUFFIX/' | sed 's/$/&, Proxy/g' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g' >> acl4ssr-proxy-qx.list
-
-          # 匹配到 DOMAIN-KEYWORD 写入 HOST-KEYWORD 并写入 DOMAIN-KEYWORD 之后的内容
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-KEYWORD/' | sed 's/$/&, Proxy/g' | sed 's/DOMAIN-KEYWORD/HOST-KEYWORD/g' >> acl4ssr-proxy-qx.list
-
-          # 匹配到 IP-CIDR，写入该行所有内容
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /IP-CIDR,/' | sed 's/no-resolve/ Proxy/g'>> acl4ssr-proxy-qx.list
-
-          # 匹配到 IP-CIDR6，写入 IP6-CIDR 并写入 IP-CIDR6 之后的内容
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /IP-CIDR6,/' | sed 's/IP-CIDR6/IP6-CIDR/g;s/no-resolve/ Proxy/g' >> acl4ssr-proxy-qx.list
-
-      - name: Generate acl4ssr-proxy-qx-test.list file
-        run: |
-          echo "# ACL4SSR Proxy for Quantumult X" > acl4ssr-proxy-qx-test.list
-          # curl -sSL ${acl4ssr_proxyGFWList} | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' >> acl4ssr-proxy-qx-test.list
-          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> acl4ssr-proxy-qx-test.list
+          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> acl4ssr-proxy-qx.list
 
 
 
