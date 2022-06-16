@@ -55,10 +55,27 @@ jobs:
           # # 若匹配其他的情况到就写入 '  - ' + 该行除了 ',no-resolve' 之外的内容，且换行
           curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /^#/ or /^$/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> acl4ssr-proxy-note.txt
 
+      - name: Generate acl4ssr-proxy-qx.list file
+        run: |
+          echo "# ACL4SSR Proxy for Quantumult X" > acl4ssr-proxy-qx.list
+
+          # 匹配到 DOMAIN-SUFFIX，写入 HOST-SUFFIX 并写入 DOMAIN-SUFFIX 之后的内容
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-SUFFIX/' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g' | sed 's/^/  - /g' >> acl4ssr-proxy-qx.list
+
+          # 匹配到 DOMAIN-KEYWORD 写入 HOST-KEYWORD 并写入 DOMAIN-KEYWORD 之后的内容
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /DOMAIN-KEYWORD/' | sed 's/DOMAIN-KEYWORD/HOST-KEYWORD/g' >> acl4ssr-proxy-qx.list
+
+          # 匹配到 IP-CIDR，写入该行所有内容
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /IP-CIDR/' >> acl4ssr-proxy-qx.list
+
+          # 匹配到 IP-CIDR6，写入 IP6-CIDR 并写入 IP-CIDR6 之后的内容
+          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /IP-CIDR6/' | sed 's/IP-CIDR6/IP6-CIDR/g' >> acl4ssr-proxy-qx.list
+
       - name: Move files to publish directory
         run: |
           mkdir -p publish
           cp *.txt ./publish/
+          cp *.list ./publish/
 
       - name: Release and upload assets
         uses: softprops/action-gh-release@v1
