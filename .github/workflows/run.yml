@@ -19,7 +19,8 @@ jobs:
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
           ### ACL4SSR ###
-          echo "ACL4SSR_Clash_ProxyGFWlist=https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/ProxyGFWlist.list?raw=true" >> $GITHUB_ENV
+          echo "ACL4SSR_Clash_ProxyGFWlist=https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
+
 
         shell: bash
 
@@ -31,11 +32,12 @@ jobs:
       - name: Generate acl4ssr-proxy.list for Clash Provider Rule
         env:
           rule_source: "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}"
+          rule_source_url_raw: "${{ env.ACL4SSR_Clash_ProxyGFWlist }}?raw=true"
         run: |
           echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/acl4ssr-proxy.list
           echo '${{env.rule_source}}' >> ./publish/Clash/acl4ssr-proxy.list
           echo "payload:" >> ./publish/Clash/acl4ssr-proxy.list
-          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
 
         shell: bash
 
