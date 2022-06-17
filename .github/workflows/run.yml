@@ -17,10 +17,10 @@ jobs:
         run: |
           echo "RELEASE_NAME=Released on $(date '+%Y-%m-%d_%H:%M:%S')" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
-          # telegram rules
-          echo "blackmatrix7_telegram=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.yaml" >> $GITHUB_ENV
-          echo "my_telegram=https://raw.githubusercontent.com/QuentinHsu/Apple-Rules-Script/main/clash/rule/telegram-ip.list" >> $GITHUB_ENV
-          echo "acl4ssr_proxyGFWList=https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
+
+          ### ACL4SSR ###
+          echo "ACL4SSR_Clash_ProxyGFWlist=https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/ProxyGFWlist.list?raw=true" >> $GITHUB_ENV
+
         shell: bash
 
       - name: Generate directory
@@ -28,42 +28,17 @@ jobs:
           mkdir -p publish/Quantumult-X
           mkdir -p publish/Clash
 
-      - name: Generate telegram.txt file
-        run: |
-          echo "# Telegram" > telegram.txt
-          # 正则匹配内容 'payload:' 并写入该行所有内容
-          curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /payload:/' >> telegram.txt
-          # 正则匹配包含'   -  '的内容 并写入该行所有内容
-          curl -sSL ${blackmatrix7_telegram} | perl -ne 'print if /\s+-\s+/' >> telegram.txt
-          # 写入一行注释：# My Telegram
-          echo "# my Telegram" >> telegram.txt
-          # 正则匹配包含 'IP-CIDR' 或者 'IP-CIDR6'，若匹配到就写入 '  - ' + 该行除了 ', no-resolve' 之外的内容，且换行
-          curl -sSL ${my_telegram} | perl -ne 'print if /IP-CIDR/ or /IP-CIDR6/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> telegram.txt
-
-      - name: Generate acl4ssr-proxy.txt file
-        run: |
-          echo "# ACL4SSR Proxy" > acl4ssr-proxy.txt
-          # 写入 'payload:'
-          echo "payload:" >> acl4ssr-proxy.txt
-          # # 正则匹配包含'# '的内容 并写入该行所有内容
-          # curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if /# /' >> acl4ssr-proxy.txt
-          # 正则匹配不包含 '#' 或者整行是空的，若匹配到就写入 '  - ' + 该行除了 ',no-resolve' 之外的内容，且换行
-          curl -sSL ${acl4ssr_proxyGFWList} | perl -ne 'print if !/^#/ and !/^$/' | sed 's/, no-resolve//g' | sed 's/^/  - /g' >> acl4ssr-proxy.txt
-
       - name: Generate acl4ssr-proxy.list for Clash Provider Ruleset
         run: |
           echo "# ACL4SSR Proxy" > ./publish/Clash/acl4ssr-proxy.list
           echo "payload:" >> ./publish/Clash/acl4ssr-proxy.list
-          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
+          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
 
       - name: Generate acl4ssr-proxy.list for Quantumult X
         run: |
           echo "# ACL4SSR Proxy for Quantumult X" > ./publish/Quantumult-X/acl4ssr-proxy.list
-          curl -sSL ${acl4ssr_proxyGFWList} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/acl4ssr-proxy.list
+          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/acl4ssr-proxy.list
 
-      - name: Move files to publish directory
-        run: |
-          cp *.txt ./publish/
 
       # - name: Release and upload assets
       #   uses: softprops/action-gh-release@v1
