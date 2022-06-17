@@ -29,12 +29,15 @@ jobs:
           mkdir -p publish/Clash
 
       - name: Generate acl4ssr-proxy.list for Clash Provider Rule
+        env:
+          rule_source = "# Rule Source: ${ACL4SSR_Clash_ProxyGFWlist/?raw=true/}"
         run: |
           echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/acl4ssr-proxy.list
-          ruleSource = "# Rule Source: ${ACL4SSR_Clash_ProxyGFWlist/?raw=true/}"
-          echo "${ruleSource}" >> ./publish/Clash/acl4ssr-proxy.list
+          echo ${rule_source} >> ./publish/Clash/acl4ssr-proxy.list
           echo "payload:" >> ./publish/Clash/acl4ssr-proxy.list
           curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
+
+        shell: bash
 
       - name: Generate acl4ssr-proxy.list for Quantumult X
         run: |
