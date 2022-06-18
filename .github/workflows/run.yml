@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-          echo "RELEASE_NAME=Released on $(date '+%Y-%m-%d_%H:%M:%S')" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Released on $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
           ### ACL4SSR ###
