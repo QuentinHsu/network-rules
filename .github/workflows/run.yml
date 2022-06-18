@@ -53,7 +53,7 @@ jobs:
           rule_source_url_raw: "${{ env.DivineEngine_Surge_Privacy }}?raw=true"
           update_time: "NOW::$(date +'%Y-%m-%d %H:%M:%S')"
         run: |
-          echo "# DivineEngine Proxy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
+          echo "# DivineEngine Privacy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
           echo '${{env.rule_source}}' >> ./publish/Clash/DivineEngine-Privacy.list
           echo "# update: ${{ steps.date.outputs.date }}" >> ./publish/Clash/DivineEngine-Privacy.list
           echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.list
