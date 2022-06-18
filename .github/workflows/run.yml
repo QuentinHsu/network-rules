@@ -21,6 +21,9 @@ jobs:
           ### ACL4SSR ###
           echo "ACL4SSR_Clash_ProxyGFWlist=https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
 
+          ### DivineEngine ###
+          echo "DivineEngine_Surge_Privacy=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Privacy.list" >> $GITHUB_ENV
+
 
         shell: bash
 
@@ -39,7 +42,15 @@ jobs:
           echo "payload:" >> ./publish/Clash/acl4ssr-proxy.list
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
 
-        shell: bash
+      - name: Generate DivineEngine-Privacy.list for Clash Provider Rule
+        env:
+          rule_source: "# Rule Source: ${{ env.DivineEngine_Surge_Privacy }}"
+          rule_source_url_raw: "${{ env.DivineEngine_Surge_Privacy }}?raw=true"
+        run: |
+          echo "# DivineEngine Proxy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
+          echo '${{env.rule_source}}' >> ./publish/Clash/DivineEngine-Privacy.list
+          echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.list
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-Privacy.list
 
       - name: Generate acl4ssr-proxy.list for Quantumult X
         run: |
