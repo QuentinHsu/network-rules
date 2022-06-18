@@ -24,8 +24,12 @@ jobs:
           ### DivineEngine ###
           echo "DivineEngine_Surge_Privacy=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Privacy.list" >> $GITHUB_ENV
 
-
         shell: bash
+
+      - name: Get Current Date
+        id: date
+        run: |
+          echo "::set-output name=date::$(date +%Y-%m-%d" "%H:%M:%S)"
 
       - name: Generate directory
         run: |
@@ -46,9 +50,11 @@ jobs:
         env:
           rule_source: "# Rule Source: ${{ env.DivineEngine_Surge_Privacy }}"
           rule_source_url_raw: "${{ env.DivineEngine_Surge_Privacy }}?raw=true"
+          update_time: "NOW::$(date +'%Y-%m-%d %H:%M:%S')"
         run: |
           echo "# DivineEngine Proxy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
           echo '${{env.rule_source}}' >> ./publish/Clash/DivineEngine-Privacy.list
+          echo "# update: ${{ steps.date.outputs.date }}" >> ./publish/Clash/DivineEngine-Privacy.list
           echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.list
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-Privacy.list
 
