@@ -64,7 +64,7 @@ jobs:
           echo "# ACL4SSR Proxy for Quantumult X" > ./publish/Quantumult-X/ACL4SSR-Proxy.list
           echo "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}" >> ./publish/Quantumult-X/ACL4SSR-Proxy.list
           echo "# Update: ${{ steps.date.outputs.date }}" >> ./publish/Quantumult-X/ACL4SSR-Proxy.list
-          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/ACL4SSR-Proxy.list
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/ACL4SSR-Proxy.list
 
 
       # - name: Release and upload assets
