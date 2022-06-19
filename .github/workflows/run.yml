@@ -23,6 +23,7 @@ jobs:
         run: |
           echo "RELEASE_NAME=Released on ${{ steps.date.outputs.date }}" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
+          echo "CURRENT_TIME=$(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
 
           ### ACL4SSR ###
           echo "ACL4SSR_Clash_ProxyGFWlist=https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/ProxyGFWlist.list" >> $GITHUB_ENV
@@ -53,7 +54,7 @@ jobs:
         run: |
           echo "# DivineEngine Privacy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
           echo "# Rule Source: ${{ env.DivineEngine_Surge_Privacy }}" >> ./publish/Clash/DivineEngine-Privacy.list
-          echo "# Update: ${{ steps.date.outputs.date }}" >> ./publish/Clash/DivineEngine-Privacy.list
+          echo "# Update: ${{ env.CURRENT_TIME }}" >> ./publish/Clash/DivineEngine-Privacy.list
           echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.list
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-Privacy.list
 
