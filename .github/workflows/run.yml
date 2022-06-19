@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "CURRENT_TIME=$(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
           echo "RELEASE_NAME=Released on $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
-          echo "UPDATED_INFO = Updated: $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S) by $(GITHUB_ACTOR)" >> $GITHUB_ENV
+          echo "UPDATED_INFO=Updated: $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S) by ${{ github.actor }}" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
           ### ACL4SSR ###
