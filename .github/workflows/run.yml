@@ -37,21 +37,21 @@ jobs:
           mkdir -p publish/Quantumult-X
           mkdir -p publish/Clash
 
-      - name: Generate acl4ssr-proxy.list for Clash Provider Rule
+      - name: Generate ACL4SSR-Proxy.list for Clash Provider Rule
         env:
           rule_source: "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}"
           rule_source_url_raw: "${{ env.ACL4SSR_Clash_ProxyGFWlist }}?raw=true"
         run: |
-          echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/acl4ssr-proxy.list
-          echo '${{env.rule_source}}' >> ./publish/Clash/acl4ssr-proxy.list
-          echo "payload:" >> ./publish/Clash/acl4ssr-proxy.list
-          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/acl4ssr-proxy.list
+          echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/ACL4SSR-Proxy.list
+          echo '${{env.rule_source}}' >> ./publish/Clash/ACL4SSR-Proxy.list
+          echo "# update: ${{ steps.date.outputs.date }}" >> ./publish/Clash/ACL4SSR-Proxy.list
+          echo "payload:" >> ./publish/Clash/ACL4SSR-Proxy.list
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/ACL4SSR-Proxy.list
 
       - name: Generate DivineEngine-Privacy.list for Clash Provider Rule
         env:
           rule_source: "# Rule Source: ${{ env.DivineEngine_Surge_Privacy }}"
           rule_source_url_raw: "${{ env.DivineEngine_Surge_Privacy }}?raw=true"
-          update_time: "NOW::$(date +'%Y-%m-%d %H:%M:%S')"
         run: |
           echo "# DivineEngine Privacy for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-Privacy.list
           echo '${{env.rule_source}}' >> ./publish/Clash/DivineEngine-Privacy.list
@@ -59,10 +59,10 @@ jobs:
           echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.list
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-Privacy.list
 
-      - name: Generate acl4ssr-proxy.list for Quantumult X
+      - name: Generate ACL4SSR-Proxy.list for Quantumult X
         run: |
-          echo "# ACL4SSR Proxy for Quantumult X" > ./publish/Quantumult-X/acl4ssr-proxy.list
-          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/acl4ssr-proxy.list
+          echo "# ACL4SSR Proxy for Quantumult X" > ./publish/Quantumult-X/ACL4SSR-Proxy.list
+          curl -sSL ${ACL4SSR_Clash_ProxyGFWlist} | sed 's/^$/##################################################################/g' | sed 's/$/&, Proxy/g' | sed 's/,no-resolve//' | sed 's/DOMAIN-SUFFIX/HOST-SUFFIX/g;s/DOMAIN-KEYWORD/HOST-KEYWORD/g;s/IP-CIDR6/IP6-CIDR/' | sed 's/#, Proxy//' >> ./publish/Quantumult-X/ACL4SSR-Proxy.list
 
 
       # - name: Release and upload assets
