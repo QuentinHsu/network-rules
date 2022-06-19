@@ -23,6 +23,7 @@ jobs:
         run: |
           echo "CURRENT_TIME=$(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
           echo "RELEASE_NAME=Released on $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S)" >> $GITHUB_ENV
+          echo "UPDATED_INFO = Updated: $(TZ=UTC-8 date +%Y-%m-%d" "%H:%M:%S) by $(GITHUB_ACTOR)" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_ENV
 
           ### ACL4SSR ###
@@ -44,7 +45,7 @@ jobs:
         run: |
           echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/ACL4SSR-Proxy.list
           echo "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}" >> ./publish/Clash/ACL4SSR-Proxy.list
-          echo "# Update: ${{ env.CURRENT_TIME }}" >> ./publish/Clash/ACL4SSR-Proxy.list
+          echo "${{ env.UPDATED_INFO }}" >> ./publish/Clash/ACL4SSR-Proxy.list
           echo "payload:" >> ./publish/Clash/ACL4SSR-Proxy.list
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/ACL4SSR-Proxy.list
 
@@ -88,6 +89,6 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b release
           git add .
-          git commit -m "${{ env.RELEASE_NAME }}"
+          git commit -m "${{ env.UPDATED_INFO }}"
           git remote add origin "https://${{ github.actor }}:${{ secrets.CLASH_RULES }}@github.com/${{ github.repository }}"
           git push -f origin release
