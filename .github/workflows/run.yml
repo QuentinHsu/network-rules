@@ -31,6 +31,7 @@ jobs:
 
           ### DivineEngine ###
           echo "DivineEngine_Surge_Privacy=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Privacy.list" >> $GITHUB_ENV
+          echo "DivineEngine_Surge_Advertising=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Advertising.list" >> $GITHUB_ENV
 
 
 
@@ -58,6 +59,16 @@ jobs:
           echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/DivineEngine-Privacy.yaml
           echo "payload:" >> ./publish/Clash/DivineEngine-Privacy.yaml
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-Privacy.yaml
+
+      - name: Generate DivineEngine-AD.yaml for Clash Provider Rule
+        env:
+          rule_source_url_raw: "${{ env.DivineEngine_Surge_Advertising }}?raw=true"
+        run: |
+          echo "# DivineEngine AD for Clash Provider Ruleset" > ./publish/Clash/DivineEngine-AD.yaml
+          echo "# Rule Source: ${{ env.DivineEngine_Surge_Advertising }}" >> ./publish/Clash/DivineEngine-AD.yaml
+          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/DivineEngine-AD.yaml
+          echo "payload:" >> ./publish/Clash/DivineEngine-AD.yaml
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-AD.yaml
 
       - name: Generate ACL4SSR-Proxy.list for Quantumult X
         env:
