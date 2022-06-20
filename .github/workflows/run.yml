@@ -39,15 +39,15 @@ jobs:
           mkdir -p publish/Quantumult-X
           mkdir -p publish/Clash
 
-      - name: Generate ACL4SSR-Proxy.list for Clash Provider Rule
+      - name: Generate ACL4SSR-Proxy.yaml for Clash Provider Rule
         env:
           rule_source_url_raw: "${{ env.ACL4SSR_Clash_ProxyGFWlist }}?raw=true"
         run: |
-          echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/ACL4SSR-Proxy.list
-          echo "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}" >> ./publish/Clash/ACL4SSR-Proxy.list
-          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/ACL4SSR-Proxy.list
-          echo "payload:" >> ./publish/Clash/ACL4SSR-Proxy.list
-          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/ACL4SSR-Proxy.list
+          echo "# ACL4SSR Proxy for Clash Provider Ruleset" > ./publish/Clash/ACL4SSR-Proxy.yaml
+          echo "# Rule Source: ${{ env.ACL4SSR_Clash_ProxyGFWlist }}" >> ./publish/Clash/ACL4SSR-Proxy.yaml
+          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/ACL4SSR-Proxy.yaml
+          echo "payload:" >> ./publish/Clash/ACL4SSR-Proxy.yaml
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/ACL4SSR-Proxy.yaml
 
       - name: Generate DivineEngine-Privacy.yaml for Clash Provider Rule
         env:
