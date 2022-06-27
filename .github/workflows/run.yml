@@ -33,6 +33,9 @@ jobs:
           echo "DivineEngine_Surge_Privacy=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Privacy.list" >> $GITHUB_ENV
           echo "DivineEngine_Surge_Advertising=https://github.com/DivineEngine/Profiles/blob/master/Surge/Ruleset/Guard/Advertising.list" >> $GITHUB_ENV
 
+          ### kr328 ###
+          echo "kr328_Domain_CN=https://rules.kr328.app/cn.yaml" >> $GITHUB_ENV
+
 
 
       - name: Generate directory
@@ -69,6 +72,15 @@ jobs:
           echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/DivineEngine-AD.yaml
           echo "payload:" >> ./publish/Clash/DivineEngine-AD.yaml
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-AD.yaml
+
+      - name: Generate kr328-Domain-CN.yaml for Clash Provider Rule
+        env:
+          rule_source_url_raw: "${{ env.kr328_Domain_CN }}?raw=true"
+        run: |
+          echo "# kr328 Domain for Clash Provider Ruleset" > ./publish/Clash/kr328-Domain-CN.yaml
+          echo "# Rule Source: ${{ env.kr328_Domain_CN }}" >> ./publish/Clash/kr328-Domain-CN.yaml
+          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/kr328-Domain-CN.yaml
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/- "/  - "/' >> ./publish/Clash/kr328-Domain-CN.yaml
 
       - name: Generate ACL4SSR-Proxy.list for Quantumult X
         env:
