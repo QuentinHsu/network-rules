@@ -73,17 +73,20 @@ jobs:
           echo "payload:" >> ./publish/Clash/DivineEngine-AD.yaml
           curl -sSL ${{env.rule_source_url_raw}} | sed 's/^$/##################################################################/g' | sed 's/,no-resolve//' | sed 's/DOMAIN/  - DOMAIN/g;s/IP/  - IP/' >> ./publish/Clash/DivineEngine-AD.yaml
 
-      - name: Generate kr328-Domain-CN.yaml for Clash Provider Rule
+      - name: Generate Kr328-Domain-CN.yaml for Clash Provider Rule
         env:
           rule_source_url_raw: "${{ env.kr328_Domain_CN }}?raw=true"
         run: |
-          echo "##################################################################" > ./publish/Clash/kr328-Domain-CN.yaml
-          echo "# kr328 Domain for Clash Provider Ruleset" >> ./publish/Clash/kr328-Domain-CN.yaml
-          echo "# Rule Source: ${{ env.kr328_Domain_CN }}" >> ./publish/Clash/kr328-Domain-CN.yaml
-          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/kr328-Domain-CN.yaml
-          echo "##################################################################" >> ./publish/Clash/kr328-Domain-CN.yaml
-          curl -sSL ${{env.rule_source_url_raw}} | sed 's/- "/  - "/' >> ./publish/Clash/kr328-Domain-CN.yaml
-          sed -i "4i\# Total number of rules: $(grep -c '  - ' ./publish/Clash/kr328-Domain-CN.yaml)'" ./publish/Clash/kr328-Domain-CN.yaml
+          echo "##################################################################" > ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "# kr328 Domain for Clash Provider Ruleset" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "# Behavior: domain" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "# Rule Source: ${{ env.kr328_Domain_CN }}" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "##################################################################" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          echo "" >> ./publish/Clash/Kr328-Domain-CN.yaml
+          curl -sSL ${{env.rule_source_url_raw}} | sed 's/- "/  - "/' >> ./publish/Clash/Kr328-Domain-CN.yaml
+          sed -i "4i\# Total: $(grep -c '  - ' ./publish/Clash/Kr328-Domain-CN.yaml)" ./publish/Clash/Kr328-Domain-CN.yaml
+          sed -i '8,11d' ./publish/Clash/Kr328-Domain-CN.yaml
 
       - name: Generate ACL4SSR-Proxy.list for Quantumult X
         env:
