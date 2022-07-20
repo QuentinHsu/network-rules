@@ -116,8 +116,7 @@ jobs:
           echo "  mitm:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           # 使用 awk 命令
           ## 在所有以 hostname 开头的行，其 "hostname = " 后的内容，以 "," 分割多个元素，每个元素作为一个 httpsDomain 以 "    - "${httpsDomain}"" 的格式依次每行输出，其他的行不处理
-          curl -sSL ${{env.rule_source_url_raw}} | awk 'BEGIN{FS="hostname = "}{if(NR==1){print "    - "$0}' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
-
+          curl -sSL ${{env.rule_source_url_raw}} | awk 'BEGIN{FS="hostname = "}{if(NR==1){print "    - "$0}else{print "    - "$1}}' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
 
 
       # - name: Release and upload assets
