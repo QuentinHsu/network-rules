@@ -111,6 +111,8 @@ jobs:
           echo "# blackmatrix7 AdvertisingLite for Stash OverRewrite" > ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "# Rule Source: ${{ env.blackmatrix7_AdvertisingLite }}" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "# ${{ env.UPDATED_INFO }}" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          echo "name: blackmatrix7-AdvertisingLite" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          echo "desc: 去广告" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "http: " >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  force-http-engine:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  mitm:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
