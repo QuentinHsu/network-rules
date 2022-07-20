@@ -120,8 +120,8 @@ jobs:
           ## 在以 hostname 开头的行，其 "hostname = " 后的内容，以 "," 分割多个元素，将每个元素 前添加 "    - ""，并依次写入一行，并在每行行末写上一个双引号。其他的行不处理
           curl -sSL ${{env.rule_source_url_raw}} | grep "hostname = " | sed 's/^/    - "/g' | sed 's/hostname = //' | sed 's/,/\n    - "/g' | sed 's/$/"/g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  rewrite:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
-          # 在以 ^https 或者 ^http 开头的行，在前添加 "    - "，后写入该行所有内容，将其中的 ' url ' 替换成 ' - '。其他的行不处理
-          curl -sSL ${{env.rule_source_url_raw}} | grep "\^http" | sed 's/^/    - /g;s/ url / - /;s/reject-200/reject/' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          # 在以 ^https 或者 ^http 开头的行，在前添加 "    - "，后写入该行所有内容，将其中的 ' url ' 替换成 ' - '。任何以 " reject-"开头的内容都替换成 " reject"
+          curl -sSL ${{env.rule_source_url_raw}} | grep "\^http" | sed 's/^/    - /g;s/ url / - /;s/reject-200|reject-dict/reject/' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
 
 
 
