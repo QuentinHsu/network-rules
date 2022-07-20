@@ -119,7 +119,7 @@ jobs:
           curl -sSL ${{env.rule_source_url_raw}} | grep "hostname = " | sed 's/^/    - "/g' | sed 's/hostname = //' | sed 's/,/\n    - "/g' | sed 's/$/"/g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  rewrite:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           # 在以 ^https 或者 ^http 开头的行，在前添加 "    - "，后写入该行所有内容，将其中的 ' url ' 替换成 ' - '。其他的行不处理
-          curl -sSL ${{env.rule_source_url_raw}} | grep "^http" | sed 's/^/    - /g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          curl -sSL ${{env.rule_source_url_raw}} | grep "\^http" | sed 's/^/    - /g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
 
 
 
