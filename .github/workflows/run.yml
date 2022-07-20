@@ -114,9 +114,9 @@ jobs:
           echo "http: " >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  force-http-engine:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           # 使用 awk 命令
-          # 获取 所有类似于 "http:\/\/api-fc\.dutils\.com\/privacy\/policy" 的行中的 http 域名 httpDomain，依次按 "    - "${httpDomain} 写入文件
-          ## 先删除当前行的所有 "\", 再获取  ":" 到 第 3 个"/" 的值，作为 httpDomain
-          curl -sSL ${{env.rule_source_url_raw}} | awk '{gsub(/\\/,""); print "    - "$0}' | awk -F ':' '{print $3}' | sed 's/\/.*//' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          # 获取 所有已 "^http" 或者 "^https" 开头的行中的 http 域名 httpDomain，依次按 "    - "${httpDomain} 写入文件
+          ## 在所有已 "^http" 或者 "^https" 开头的，先删除当前行的所有 "\", 再获取  ":" 到 第 3 个"/" 的值，作为 httpDomain
+          curl -sSL ${{env.rule_source_url_raw}} | awk 'BEGIN{FS="^http"}{if(index($0,":")>0){print "    - "$0}}' | awk 'BEGIN{FS="^https"}{if(index($0,":")>0){print "    - "$0}}' | sed 's/^/    - /' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
 
 
 
