@@ -114,9 +114,9 @@ jobs:
           echo "http: " >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  force-http-engine:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
           echo "  mitm:" >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
-          # 用 read 命令
-          ## 在以 hostname 开头的行，其 "hostname = " 后的内容，以 "," 分割多个元素，每个元素作为一个 httpsDomain 以 "    - "${httpsDomain}"" 的格式依次每行输出，其他的行不处理
-          curl -sSL ${{env.rule_source_url_raw}} | rēad -d '\n' | sed 's/^hostname = //' | sed 's/,/\n    - /g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
+          # 用 grep 命令
+          ## 在以 hostname 开头的行，其 "hostname = " 后的内容，以 "," 分割多个元素，将每个元素作为一个 httpsDomain 以 "    - "${httpsDomain}"" 的格式依次每行输出，其他的行不处理
+          curl -sSL ${{env.rule_source_url_raw}} | grep "hostname = " | sed 's/^/    - /' | sed 's/hostname = //' | sed 's/,/\n    - /g' >> ./publish/Stash/blackmatrix7-AdvertisingLite.stoverride
 
 
       # - name: Release and upload assets
